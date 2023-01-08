@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -29,7 +29,9 @@ export function SearchResults({ rows, onMovieSelect }) {
                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
               >
                 <TableCell component="th" scope="row">
-                  <Button variant="text" onClick={() => { onMovieSelect(row.name); }}>{row.name}</Button>
+                  <Button variant="text" onClick={() => { onMovieSelect({ id: row.id, title: row.name }); }}>
+                    {row.name}
+                  </Button>
                 </TableCell>
                 <TableCell>{row.score}</TableCell>
                 <TableCell>{row.genres}</TableCell>

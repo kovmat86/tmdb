@@ -6,4 +6,5 @@
 
 ## External references
 - TMDB: https://www.themoviedb.org/
+- IMDB: https://www.imdb.com/
 - Wikipedia REST API: https://en.wikipedia.org/api/rest_v1
