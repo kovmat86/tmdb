@@ -11,7 +11,10 @@ import Button from '@mui/material/Button';
 
 export function SearchResults({ rows, onMovieSelect }) {
   return (
-    <Box sx={{ display: 'block' }}>
+    <Box sx={{
+      display: 'block',
+      width: '100%'
+    }}>
       <h2>Search Results</h2>
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -29,7 +32,17 @@ export function SearchResults({ rows, onMovieSelect }) {
                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
               >
                 <TableCell component="th" scope="row">
-                  <Button variant="text" onClick={() => { onMovieSelect({ id: row.id, title: row.name }); }}>
+                  <Button
+                    variant="text"
+                    onClick={() => { onMovieSelect({ id: row.id, title: row.name }); }}
+                    onKeyPress={event => {
+                      console.log('onKeyPress');
+                      console.log(event);
+                      if (event.key === 'Enter') {
+                        onMovieSelect({ id: row.id, title: row.name });
+                      }
+                    }}
+                  >
                     {row.name}
                   </Button>
                 </TableCell>

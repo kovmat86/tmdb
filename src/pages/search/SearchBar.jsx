@@ -1,5 +1,5 @@
-import React, { useRef } from "react";
-import { Box, Button, InputLabel, TextField } from '@mui/material';
+import React, { useRef } from 'react';
+import { Box, Button, TextField } from '@mui/material';
 
 export function SearchBar({ onSearch }) {
   const textFieldRef = useRef();
@@ -10,10 +10,14 @@ export function SearchBar({ onSearch }) {
       <Box
         sx={{
           display: "flex",
+          gap: '10px',
+          justifyContent: 'center',
         }}
       >
-        <InputLabel>Search criteria</InputLabel>
-        <TextField inputRef={textFieldRef} />
+        <TextField
+          inputRef={textFieldRef}
+          size="small"
+        />
         <Button variant="contained" type="button" onClick={() => onSearch(textFieldRef.current.value)}>
           Search
         </Button>

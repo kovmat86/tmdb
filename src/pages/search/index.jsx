@@ -1,10 +1,17 @@
 import React, { useState } from 'react';
-import { Box } from '@mui/material';
+import { Box, CircularProgress } from '@mui/material';
 import { searchMovies, searchSimilarMovies } from '../../api/tmdbApi'
 import { getSummary, getImdbLink } from '../../api/wikipediaApi'
 import { Details } from './Details';
 import { SearchResults } from './SearchResults';
 import { SearchBar } from './SearchBar';
+
+const convertMoviesToRows = (movies) => movies.map(({ id, name, score, genres }) => ({
+  id,
+  name,
+  score,
+  genres: genres.map(({ name }) => name).join(', '),
+}));
 
 export function Search() {
   const [id, setId] = useState(null);
@@ -13,22 +20,19 @@ export function Search() {
   const [details, setDetails] = useState('Please select a movie!');
   const [wikipediaLink, setWikipediaLink] = useState(null);
   const [imdbLink, setImdbLink] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const onSearch = async (searchText) => {
-    console.log(`searchText: ${searchText}`);
-
+    setIsLoading(true);
     const result = await searchMovies(searchText);
     const movies = result.data.data.searchMovies;
 
-    setRows(movies.map(({ id, name, score, genres }) => ({
-      id,
-      name,
-      score,
-      genres: genres.map(({ name }) => name).join(', '),
-    })));
+    setRows(convertMoviesToRows(movies));
+    setIsLoading(false);
   };
 
   const onMovieSelect = async ({ id, title }) => {
+    setIsLoading(true);
     let summaryResult;
     try {
       summaryResult = await getSummary(title);
@@ -36,6 +40,7 @@ export function Search() {
       setDetails(`Page "${title}" not found on Wikipedia!`);
       setWikipediaLink(null);
       setImdbLink(null);
+      setIsLoading(false);
       return;
     }
 
@@ -48,35 +53,35 @@ export function Search() {
 
     const imdbLink = await getImdbLink(title);
     setImdbLink(imdbLink);
+    setIsLoading(false);
   }
 
   const onSwitchToRelatedMovies = async () => {
-    console.log(`Show related movies for ${title} / ${id}`);
     if (!id) {
       return;
     }
 
+    setIsLoading(true);
     const result = await searchSimilarMovies(id);
     const relatedMovies = result.data.data.movie.similar;
 
-    console.log(relatedMovies);
-
-    setRows(relatedMovies.map(({ id, name, score, genres }) => ({
-      id,
-      name,
-      score,
-      genres: genres.map(({ name }) => name).join(', '),
-    })));
+    setRows(convertMoviesToRows(relatedMovies));
+    setIsLoading(false);
   }
 
   return (
-    <div>
+    <div className="page">
       <SearchBar
         onSearch={onSearch}
       />
+      <div className="spinner">
+        { isLoading && <CircularProgress/> }
+      </div>
       <Box
         sx={{
           display: 'inline-flex',
+          gap: '20px',
+          width: '100%'
         }}
       >
         <SearchResults
@@ -84,6 +89,7 @@ export function Search() {
           onMovieSelect={onMovieSelect}
         />
         <Details
+          className='details'
           details={details}
           wikipediaLink={wikipediaLink}
           imdbLink={imdbLink}
