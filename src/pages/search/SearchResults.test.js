@@ -3,15 +3,15 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import { SearchResults } from "./SearchResults";
 
 const rows = [{
-    id: 102,
+    id: '102',
     name: 'Terminator 2',
-    score: '8.1',
+    score: 8.1,
     genres: 'sci-fi, action',
   },
   {
-    id: 105,
+    id: '105',
     name: 'Titanic',
-    score: '7.8',
+    score: 7.8,
     genres: 'drama, romance',
   }
 ];
@@ -40,7 +40,7 @@ test("Clicking on title fetches details", () => {
 
   fireEvent.click(screen.getByText(/Terminator 2/));
   expect(onMovieSelectMock.mock.results[0].value).toStrictEqual({
-    id: 102,
+    id: '102',
     title: 'Terminator 2'
   });
 });
