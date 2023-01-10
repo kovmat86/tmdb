@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -35,13 +36,6 @@ export function SearchResults({ rows, onMovieSelect }) {
                   <Button
                     variant="text"
                     onClick={() => { onMovieSelect({ id: row.id, title: row.name }); }}
-                    onKeyPress={event => {
-                      console.log('onKeyPress');
-                      console.log(event);
-                      if (event.key === 'Enter') {
-                        onMovieSelect({ id: row.id, title: row.name });
-                      }
-                    }}
                   >
                     {row.name}
                   </Button>
@@ -56,3 +50,15 @@ export function SearchResults({ rows, onMovieSelect }) {
     </Box>
   );
 }
+
+SearchResults.propTypes = {
+  rows: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      name: PropTypes.string.isRequired,
+      score: PropTypes.number.isRequired,
+      genres: PropTypes.string.isRequired,
+    }).isRequired,
+  ),
+  onMovieSelect: PropTypes.func.isRequired,
+};

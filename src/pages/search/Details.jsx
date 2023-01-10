@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from 'prop-types';
 import { Button, Box, Link } from "@mui/material";
 
 export function Details({
@@ -49,3 +50,11 @@ export function Details({
     </Box>
   );
 }
+
+Details.propTypes = {
+  title: PropTypes.string,
+  details: PropTypes.string,
+  wikipediaLink: PropTypes.string,
+  imdbLink: PropTypes.string,
+  onSwitchToRelatedMovies: PropTypes.func,
+};
